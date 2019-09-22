@@ -24,10 +24,21 @@ exports.dialogflowGateway = functions.https.onRequest((request, response) => {
             sessionId
         } = request.body
 
+
         const sessionClient = new SessionsClient({
             credentials: serviceAccount
         })
 
-        const session = sessionClient.sessionPath("Chatbot", sessionId)
+        const session = sessionClient.sessionPath("chatbot-52280", sessionId)
+        const responses = await sessionClient.detectIntent({
+            session,
+            queryInput
+        })
+
+        const result = responses[0].queryResult
+
+        result.fulfillmentText
+
+        response.send(result)
     })
 })
